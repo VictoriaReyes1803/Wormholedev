@@ -85,7 +85,7 @@ export default function Hero() {
 
             <motion.div {...fadeUp(0.5)} className="mt-12 flex flex-wrap gap-8">
               {[
-                { val: t('hero.stat1Val'), label: t('hero.stat1Label') },
+
                 { val: t('hero.stat2Val'), label: t('hero.stat2Label') },
                 { val: t('hero.stat3Val'), label: t('hero.stat3Label') },
               ].map(s => (
