@@ -1,0 +1,266 @@
+export default {
+  nav: {
+    services: 'Services',
+    whyUs: 'Why Us',
+    process: 'Process',
+    solutions: 'Solutions',
+    about: 'About',
+    contact: 'Contact',
+    cta: 'Get in Touch',
+  },
+
+  hero: {
+    badge: 'Custom software built for your business',
+    headline1: 'We Turn',
+    headline2: 'Ideas',
+    headline3: 'Into Digital',
+    headline4: 'Products',
+    sub: 'WormholeDev designs and builds professional web apps, mobile apps, AI-powered tools, and custom software solutions that help your business grow — from concept to launch and beyond.',
+    ctaPrimary: 'Get in Touch',
+    ctaSecondary: 'View Services',
+    stat1Val: '50+',
+    stat1Label: 'Projects delivered',
+    stat2Val: '100%',
+    stat2Label: 'Custom built',
+    stat3Val: '24/7',
+    stat3Label: 'Support available',
+    scrollLabel: 'Scroll',
+    cardBuilt: 'Built for your business',
+  },
+
+  services: {
+    badge: 'What we do',
+    title1: 'Everything Your Business',
+    title2: 'Needs to Go Digital',
+    sub: 'From custom web apps to AI-powered tools — we build the software that helps your business move faster, operate smarter, and serve customers better.',
+    items: [
+      {
+        title: 'Web Application Development',
+        desc: 'From landing pages to fully-featured web platforms — we build fast, modern, and user-friendly web apps tailored to your business needs.',
+        tags: ['Portals', 'Dashboards', 'E-commerce'],
+      },
+      {
+        title: 'Mobile App Development',
+        desc: 'Native iOS and Android apps that deliver seamless user experiences — designed with your customers in mind.',
+        tags: ['iOS', 'Android', 'Native'],
+      },
+      {
+        title: 'Hybrid App Development',
+        desc: 'One codebase, every platform. We build cross-platform apps that look and feel native on any device, reducing cost without sacrificing quality.',
+        tags: ['React Native', 'Cross-Platform'],
+      },
+      {
+        title: 'Custom Software Solutions',
+        desc: "Off-the-shelf software doesn't always fit. We design and build bespoke solutions that match exactly how your business operates.",
+        tags: ['Tailored', 'Scalable', 'Reliable'],
+      },
+      {
+        title: 'Business Process Improvement',
+        desc: 'We analyze your current workflows and build digital tools that make operations faster, leaner, and more profitable.',
+        tags: ['Workflow', 'Efficiency', 'Growth'],
+      },
+      {
+        title: 'Task Automation',
+        desc: 'Stop wasting time on repetitive tasks. We automate manual processes so your team can focus on what truly matters.',
+        tags: ['Automation', 'Productivity'],
+      },
+      {
+        title: 'Data Management Systems',
+        desc: 'Organize, access, and make sense of your business data with custom databases and management tools built for clarity.',
+        tags: ['Databases', 'Reporting', 'Insights'],
+      },
+      {
+        title: 'AI & Smart Integrations',
+        desc: 'Bring the power of AI into your business. From intelligent chatbots to predictive tools — we implement practical AI that delivers real results.',
+        tags: ['AI', 'Machine Learning', 'Chatbots'],
+      },
+      {
+        title: 'Technical Support & Maintenance',
+        desc: "We don't disappear after launch. Get ongoing support, updates, and monitoring to keep your software running smoothly.",
+        tags: ['Support', 'Updates', 'Monitoring'],
+      },
+      {
+        title: 'From Idea to Product',
+        desc: "Have a business idea but not sure where to start? We guide you from concept through design, development, and launch.",
+        tags: ['Strategy', 'MVP', 'Launch'],
+      },
+    ],
+  },
+
+  whyUs: {
+    badge: 'Why WormholeDev',
+    title1: 'Why Businesses Choose',
+    title2: 'Working With Us',
+    sub: 'We combine technical expertise with genuine business understanding to build software that makes a real difference — not just code that runs.',
+    items: [
+      {
+        title: 'Solutions Built Around You',
+        desc: "We don't apply one-size-fits-all templates. Every project starts with understanding your business and building from there.",
+      },
+      {
+        title: 'We Speak Business, Not Jargon',
+        desc: "You don't need to be technical to work with us. We translate your goals into software and keep you informed in plain language.",
+      },
+      {
+        title: 'Fast & Iterative Delivery',
+        desc: 'We work in short cycles so you see real progress quickly. No months of silence before you see results.',
+      },
+      {
+        title: 'Quality You Can Rely On',
+        desc: "We build software that's stable, secure, and built to scale — not just something that works today and breaks tomorrow.",
+      },
+      {
+        title: 'Built to Grow With You',
+        desc: "Your software grows with your business. We design for scalability from day one so you're never stuck starting over.",
+      },
+      {
+        title: 'We Respect Your Time',
+        desc: "Clear timelines, honest updates, and reliable deliveries. We treat your project as if it were our own business on the line.",
+      },
+      {
+        title: 'Always Reachable',
+        desc: "Real support from real people. When you have a question or need something changed, we're available and responsive.",
+      },
+      {
+        title: 'End-to-End Partnership',
+        desc: "From the first conversation to launch and beyond — we're with you at every step, not just during development.",
+      },
+    ],
+  },
+
+  process: {
+    badge: 'How it works',
+    title1: 'A Simple Process With',
+    title2: 'No Surprises',
+    sub: "We keep you in the loop from day one. Our process is designed to be clear, predictable, and stress-free — even if you've never built software before.",
+    stepLabel: 'Step',
+    steps: [
+      {
+        title: 'We Listen to Your Idea',
+        desc: 'We start with a deep-dive conversation to understand your business, your goals, and the problem you want to solve. No technical knowledge required.',
+        detail: 'Discovery call · Requirements gathering · Business analysis',
+      },
+      {
+        title: 'We Plan the Solution',
+        desc: "We create a clear roadmap — what we'll build, how it will work, what it will cost, and how long it will take. You approve before we write a single line of code.",
+        detail: 'Technical architecture · Project roadmap · Cost estimate',
+      },
+      {
+        title: 'We Build It',
+        desc: "Our team gets to work building your solution in short, focused cycles. You see progress regularly and can provide feedback at every stage.",
+        detail: 'Agile development · Regular updates · Quality testing',
+      },
+      {
+        title: 'We Launch & Support',
+        desc: "We deploy your product, walk you through everything, and stay on hand for ongoing support, updates, and improvements as your business grows.",
+        detail: 'Deployment · Training · Ongoing support',
+      },
+    ],
+  },
+
+  solutions: {
+    badge: 'Solutions',
+    title1: 'Real Problems,',
+    title2: 'Real Solutions',
+    sub: "No matter where your business is today, we have the right digital solution to move it forward. Here's what we help companies achieve.",
+    ctaTitle: "Don't see exactly what you need?",
+    ctaSub: "We tackle custom challenges every day. Tell us your situation and we'll figure out the best path forward together.",
+    ctaBtn: 'Talk to Us About Your Project',
+    items: [
+      {
+        title: 'Digitize Your Operations',
+        desc: 'Replace spreadsheets, paper processes, and manual workflows with smart digital tools that save time and reduce errors.',
+      },
+      {
+        title: 'Automate Repetitive Work',
+        desc: 'Stop paying people to do what software can do in seconds. Automate reports, notifications, data entry, and more.',
+      },
+      {
+        title: 'Build Customer Platforms',
+        desc: 'Create apps, portals, and platforms your customers actually want to use — and keep coming back to.',
+      },
+      {
+        title: 'Implement AI Features',
+        desc: 'Add intelligent features like chatbots, recommendations, document processing, and smart search to your existing systems.',
+      },
+      {
+        title: 'Modernize Legacy Systems',
+        desc: 'Outdated software slowing you down? We migrate, refactor, or fully rebuild legacy systems into modern, maintainable solutions.',
+      },
+      {
+        title: 'Improve Internal Processes',
+        desc: 'Connect your tools, centralize your data, and give your team a better way to collaborate and make decisions.',
+      },
+    ],
+  },
+
+  about: {
+    badge: 'About WormholeDev',
+    title1: 'We Exist to Transform',
+    title2: 'Business Ideas',
+    title3: 'Into Working Products',
+    p1: 'WormholeDev is a software development company focused on turning business goals into digital reality. We work with entrepreneurs, startups, and established businesses to design, build, and maintain the software tools they need to operate more effectively and grow with confidence.',
+    p2: "We believe that great software should feel like a natural extension of your business — something that solves real problems, not just something that exists for the sake of technology.",
+    p3: "Our team brings together business thinking and technical expertise, so every product we build is grounded in what actually matters: results for you and your customers.",
+    values: [
+      { label: 'Clarity', desc: "We keep communication simple and direct — no confusing tech talk." },
+      { label: 'Commitment', desc: "We treat every project like it's our own business on the line." },
+      { label: 'Quality', desc: 'We build to last — reliable, scalable, and maintainable software.' },
+      { label: 'Impact', desc: 'We focus on results that matter: more efficiency, more growth, better products.' },
+    ],
+  },
+
+  contact: {
+    badge: "Let's talk",
+    title1: 'Ready to Build Something',
+    title2: 'Great Together?',
+    sub: "Tell us about your project. We'll review your message and get back to you within one business day.",
+    infoTitle: 'Get in touch',
+    infoSub: "Whether you have a fully formed idea or just a vague concept — we'd love to hear from you. There's no commitment, just a conversation.",
+    nextTitle: 'What happens next?',
+    next: [
+      'We review your message within 24h',
+      'We schedule a free discovery call',
+      'We send a no-obligation proposal',
+    ],
+    form: {
+      name: 'Your name',
+      nameRequired: 'Your name *',
+      email: 'Email address *',
+      company: 'Company / Business name',
+      companyPlaceholder: 'Your company (optional)',
+      service: 'Service needed',
+      serviceDefault: 'Select a service',
+      budget: 'Estimated budget',
+      budgetDefault: 'Select a range',
+      message: 'Tell us about your project *',
+      messagePlaceholder: "Describe what you're trying to build or what problem you need to solve. Don't worry about being too technical — plain language is fine.",
+      submit: 'Send Your Message',
+      disclaimer: "No commitment required. We'll review and respond within one business day.",
+    },
+    services: ['Web Application', 'Mobile App', 'Custom Software', 'AI Integration', 'Automation', 'Other / Not Sure'],
+    budgets: ['Under $5,000', '$5,000 – $15,000', '$15,000 – $50,000', '$50,000+', 'Not sure yet'],
+    successTitle: 'Message received!',
+    successSub: "Thanks for reaching out. We'll review your project details and get back to you within one business day.",
+    location: 'Torreon, Coahuila Mexico · Remote · Available worldwide',
+  },
+
+  footer: {
+    tagline: 'We turn business ideas into powerful digital products — web apps, mobile apps, automation, and AI solutions built to grow with you.',
+    navTitle: 'Navigation',
+    servicesTitle: 'Services',
+    contactTitle: 'Contact',
+    serviceLinks: [
+      'Web Application Development',
+      'Mobile App Development',
+      'Custom Software Solutions',
+      'AI & Smart Integrations',
+      'Task Automation',
+      'Technical Support',
+    ],
+    startProject: 'Start a project',
+    rights: '© {{year}} WormholeDev. All rights reserved.',
+    built: 'Built to help businesses grow through technology.',
+    location: 'Torreon, Coahuila Mexico · Remote · Worldwide',
+  },
+}
