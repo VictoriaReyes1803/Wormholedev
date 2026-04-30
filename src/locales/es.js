@@ -236,6 +236,8 @@ export default {
       message: 'Cuéntanos sobre tu proyecto *',
       messagePlaceholder: 'Describe qué quieres construir o qué problema necesitas resolver. No te preocupes por ser técnico — el lenguaje sencillo está bien.',
       submit: 'Enviar mensaje',
+      sending: 'Enviando...',
+      error: 'No pudimos enviar tu mensaje. Intenta de nuevo o escríbenos directamente por correo.',
       disclaimer: 'Sin compromisos. Revisamos y respondemos dentro de un día hábil.',
     },
     services: ['Aplicación Web', 'App Móvil', 'Software a la Medida', 'Integración de IA', 'Automatización', 'Otro / No estoy seguro'],
