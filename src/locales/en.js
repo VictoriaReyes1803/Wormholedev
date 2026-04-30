@@ -7,6 +7,12 @@ export default {
     about: 'About',
     contact: 'Contact',
     cta: 'Get in Touch',
+    switchToSpanish: 'Switch to Spanish',
+    switchToEnglish: 'Switch to English',
+    switchToLight: 'Switch to light mode',
+    switchToDark: 'Switch to dark mode',
+    openMenu: 'Open menu',
+    closeMenu: 'Close menu',
   },
 
   hero: {

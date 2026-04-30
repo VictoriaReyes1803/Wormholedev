@@ -120,6 +120,7 @@ export default function Contact() {
                 className="bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-7 space-y-5"
               >
                 <input
+                  id="contact-website"
                   type="text"
                   name="website"
                   value={form.website}
@@ -130,16 +131,18 @@ export default function Contact() {
                 />
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-xs font-600 text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{t('contact.form.nameRequired')}</label>
+                    <label htmlFor="contact-name" className="block text-xs font-600 text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{t('contact.form.nameRequired')}</label>
                     <input
+                      id="contact-name"
                       type="text" name="name" required value={form.name} onChange={handleChange}
                       placeholder="John Smith"
                       className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 dark:focus:border-blue-500 transition-all placeholder-gray-400 dark:placeholder-gray-500"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-600 text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{t('contact.form.email')}</label>
+                    <label htmlFor="contact-email" className="block text-xs font-600 text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{t('contact.form.email')}</label>
                     <input
+                      id="contact-email"
                       type="email" name="email" required value={form.email} onChange={handleChange}
                       placeholder="john@company.com"
                       className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 dark:focus:border-blue-500 transition-all placeholder-gray-400 dark:placeholder-gray-500"
@@ -148,8 +151,9 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-600 text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{t('contact.form.company')}</label>
+                  <label htmlFor="contact-company" className="block text-xs font-600 text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{t('contact.form.company')}</label>
                   <input
+                    id="contact-company"
                     type="text" name="company" value={form.company} onChange={handleChange}
                     placeholder={t('contact.form.companyPlaceholder')}
                     className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 dark:focus:border-blue-500 transition-all placeholder-gray-400 dark:placeholder-gray-500"
@@ -158,8 +162,9 @@ export default function Contact() {
 
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-xs font-600 text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{t('contact.form.service')}</label>
+                    <label htmlFor="contact-service" className="block text-xs font-600 text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{t('contact.form.service')}</label>
                     <select
+                      id="contact-service"
                       name="service" value={form.service} onChange={handleChange}
                       className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 dark:focus:border-blue-500 transition-all"
                     >
@@ -168,8 +173,9 @@ export default function Contact() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-xs font-600 text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{t('contact.form.budget')}</label>
+                    <label htmlFor="contact-budget" className="block text-xs font-600 text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{t('contact.form.budget')}</label>
                     <select
+                      id="contact-budget"
                       name="budget" value={form.budget} onChange={handleChange}
                       className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 dark:focus:border-blue-500 transition-all"
                     >
@@ -180,8 +186,9 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-600 text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{t('contact.form.message')}</label>
+                  <label htmlFor="contact-message" className="block text-xs font-600 text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{t('contact.form.message')}</label>
                   <textarea
+                    id="contact-message"
                     name="message" required value={form.message} onChange={handleChange}
                     rows={4} placeholder={t('contact.form.messagePlaceholder')}
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 dark:focus:border-blue-500 transition-all placeholder-gray-400 dark:placeholder-gray-500 resize-none"
