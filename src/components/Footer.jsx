@@ -11,9 +11,9 @@ const navKeys = [
 ]
 
 const socialLinks = [
-  { label: 'GH', title: 'GitHub', href: '#' },
-  { label: 'LI', title: 'LinkedIn', href: '#' },
-  { label: 'X', title: 'Twitter / X', href: '#' },
+  { label: 'GH', title: 'GitHub', href: 'https://github.com/VictoriaReyes1803' },
+  { label: 'LI', title: 'LinkedIn', href: 'https://www.linkedin.com/company/wormholedev-space/about/?viewAsMember=true' },
+  { label: 'X', title: 'Twitter / X', href: 'https://twitter.com/wormholedev' },
 ]
 
 export default function Footer() {
