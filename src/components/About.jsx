@@ -2,7 +2,7 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { Zap, Target, Heart, Globe } from 'lucide-react'
-import { SectionHeader } from './Services.jsx'
+
 
 const icons = [Target, Heart, Zap, Globe]
 
