@@ -36,6 +36,9 @@ export default function Navbar({ dark, setDark }) {
   }
 
   const currentLang = i18n.language.startsWith('es') ? 'ES' : 'EN'
+  const languageLabel = currentLang === 'EN' ? t('nav.switchToSpanish') : t('nav.switchToEnglish')
+  const themeLabel = dark ? t('nav.switchToLight') : t('nav.switchToDark')
+  const menuLabel = mobileOpen ? t('nav.closeMenu') : t('nav.openMenu')
 
   return (
     <motion.header
@@ -83,8 +86,8 @@ export default function Navbar({ dark, setDark }) {
             {/* Language toggle */}
             <button
               onClick={toggleLang}
-              aria-label="Toggle language"
-              title={currentLang === 'EN' ? 'Cambiar a Español' : 'Switch to English'}
+              aria-label={languageLabel}
+              title={languageLabel}
               className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-cyan-400 transition-all duration-200"
             >
               <Globe size={15} />
@@ -94,7 +97,7 @@ export default function Navbar({ dark, setDark }) {
             {/* Theme toggle */}
             <button
               onClick={() => setDark(d => !d)}
-              aria-label="Toggle dark mode"
+              aria-label={themeLabel}
               className="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
             >
               <AnimatePresence mode="wait">
@@ -123,7 +126,7 @@ export default function Navbar({ dark, setDark }) {
             <button
               onClick={() => setMobileOpen(o => !o)}
               className="md:hidden p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              aria-label="Toggle menu"
+              aria-label={menuLabel}
             >
               {mobileOpen ? <X size={20} /> : <Menu size={20} />}
             </button>

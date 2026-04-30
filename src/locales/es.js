@@ -7,6 +7,12 @@ export default {
     about: 'Nosotros',
     contact: 'Contacto',
     cta: 'Contáctanos',
+    switchToSpanish: 'Cambiar a español',
+    switchToEnglish: 'Cambiar a inglés',
+    switchToLight: 'Cambiar a modo claro',
+    switchToDark: 'Cambiar a modo oscuro',
+    openMenu: 'Abrir menú',
+    closeMenu: 'Cerrar menú',
   },
 
   hero: {
