@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { Mail, Phone, MapPin, Send, CheckCircle2 } from 'lucide-react'
@@ -7,15 +7,105 @@ import { SectionHeader } from './Services.jsx'
 export default function Contact() {
   const { t } = useTranslation()
   const ref = useRef(null)
+  const turnstileRef = useRef(null)
+  const turnstileWidgetRef = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
   const [form, setForm] = useState({ name: '', email: '', company: '', service: '', budget: '', message: '', website: '' })
   const [status, setStatus] = useState('idle')
   const [error, setError] = useState('')
+  const [turnstileSiteKey, setTurnstileSiteKey] = useState('')
+  const [turnstileToken, setTurnstileToken] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
   const services = t('contact.services', { returnObjects: true })
   const budgets = t('contact.budgets', { returnObjects: true })
   const nextItems = t('contact.next', { returnObjects: true })
+
+  useEffect(() => {
+    let active = true
+
+    fetch('/api/security-config')
+      .then(response => response.ok ? response.json() : null)
+      .then(data => {
+        if (active && data?.turnstileSiteKey) {
+          setTurnstileSiteKey(data.turnstileSiteKey)
+        }
+      })
+      .catch(() => {})
+
+    return () => {
+      active = false
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!turnstileSiteKey || !turnstileRef.current) return
+
+    let active = true
+
+    const renderTurnstile = () => {
+      if (!active || !window.turnstile || !turnstileRef.current || turnstileWidgetRef.current) return
+
+      turnstileWidgetRef.current = window.turnstile.render(turnstileRef.current, {
+        sitekey: turnstileSiteKey,
+        theme: 'auto',
+        callback: token => {
+          setTurnstileToken(token)
+          setError('')
+        },
+        'expired-callback': () => setTurnstileToken(''),
+        'error-callback': () => {
+          setTurnstileToken('')
+          setError(t('contact.form.turnstileError'))
+        },
+      })
+    }
+
+    if (window.turnstile) {
+      renderTurnstile()
+    } else {
+      const existingScript = document.getElementById('cloudflare-turnstile-script')
+      const script = existingScript || document.createElement('script')
+      script.id = 'cloudflare-turnstile-script'
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit'
+      script.async = true
+      script.defer = true
+      script.addEventListener('load', renderTurnstile)
+
+      if (!existingScript) {
+        document.body.appendChild(script)
+      }
+    }
+
+    return () => {
+      active = false
+      if (window.turnstile && turnstileWidgetRef.current) {
+        window.turnstile.remove(turnstileWidgetRef.current)
+        turnstileWidgetRef.current = null
+      }
+    }
+  }, [t, turnstileSiteKey])
+
+  const getEmailError = email => {
+    const value = email.trim()
+
+    if (!value) return t('contact.form.emailRequired')
+    if (!value.includes('@')) return t('contact.form.emailMissingAt')
+
+    const [local, domain] = value.split('@')
+    if (!local || !domain) return t('contact.form.emailIncomplete')
+    if (!domain.includes('.')) return t('contact.form.emailMissingDomain')
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return t('contact.form.emailInvalid')
+
+    return ''
+  }
+
+  const resetTurnstile = () => {
+    if (window.turnstile && turnstileWidgetRef.current) {
+      window.turnstile.reset(turnstileWidgetRef.current)
+      setTurnstileToken('')
+    }
+  }
 
   const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
   const handleSubmit = async e => {
@@ -23,20 +113,51 @@ export default function Contact() {
     setStatus('sending')
     setError('')
 
+    const emailError = getEmailError(form.email)
+    if (!form.name.trim()) {
+      setError(t('contact.form.nameMissing'))
+      setStatus('idle')
+      return
+    }
+
+    if (emailError) {
+      setError(emailError)
+      setStatus('idle')
+      return
+    }
+
+    if (!form.message.trim()) {
+      setError(t('contact.form.messageMissing'))
+      setStatus('idle')
+      return
+    }
+
+    if (turnstileSiteKey && !turnstileToken) {
+      setError(t('contact.form.turnstileRequired'))
+      setStatus('idle')
+      return
+    }
+
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, turnstileToken }),
       })
 
       if (!response.ok) {
-        throw new Error('Contact request failed')
+        const data = await response.json().catch(() => null)
+        throw new Error(data?.message || 'Contact request failed')
       }
 
       setSubmitted(true)
-    } catch {
-      setError(t('contact.form.error'))
+    } catch (err) {
+      const message = err.message === 'Security verification failed. Please try again.'
+        ? t('contact.form.turnstileError')
+        : t('contact.form.error')
+
+      setError(message)
+      resetTurnstile()
       setStatus('idle')
     }
   }
@@ -116,6 +237,7 @@ export default function Contact() {
               </motion.div>
             ) : (
               <form
+                noValidate
                 onSubmit={handleSubmit}
                 className="bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-7 space-y-5"
               >
@@ -199,6 +321,12 @@ export default function Contact() {
                   <p className="text-sm text-red-600 dark:text-red-400 text-center" role="alert">
                     {error}
                   </p>
+                )}
+
+                {turnstileSiteKey && (
+                  <div className="flex justify-center">
+                    <div ref={turnstileRef} />
+                  </div>
                 )}
 
                 <button

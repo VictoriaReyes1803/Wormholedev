@@ -2,6 +2,7 @@ import { jest, describe, test, expect, beforeEach, afterEach } from '@jest/globa
 import handler from './contact.js'
 
 const originalEnv = process.env
+let requestIndex = 0
 
 const createResponse = () => {
   const res = {
@@ -26,6 +27,9 @@ const createResponse = () => {
 
 const createPostRequest = body => ({
   method: 'POST',
+  headers: {
+    'cf-connecting-ip': `192.0.2.${requestIndex += 1}`,
+  },
   body: {
     name: 'Jane Client',
     email: 'Jane@Example.com',
@@ -45,6 +49,7 @@ describe('contact api handler', () => {
       CONTACT_TO_EMAIL: 'info@wormholedev.space',
       CONTACT_FROM_EMAIL: 'info@wormholedev.space',
       CONTACT_FROM_NAME: 'WormholeDev',
+      TURNSTILE_SECRET_KEY: '',
     }
 
     globalThis.fetch = jest.fn().mockResolvedValue({ ok: true })
@@ -115,6 +120,64 @@ describe('contact api handler', () => {
     expect(res.statusCode).toBe(500)
     expect(res.body).toEqual({ message: 'Email service is not configured' })
     expect(globalThis.fetch).not.toHaveBeenCalled()
+  })
+
+  test('verifies Turnstile before sending email when secret is configured', async () => {
+    process.env.TURNSTILE_SECRET_KEY = 'turnstile-secret'
+    globalThis.fetch
+      .mockResolvedValueOnce({
+        ok: true,
+        json: jest.fn().mockResolvedValue({ success: true }),
+      })
+      .mockResolvedValueOnce({ ok: true })
+    const res = createResponse()
+
+    await handler(createPostRequest({ turnstileToken: 'valid-turnstile-token' }), res)
+
+    expect(res.statusCode).toBe(200)
+    expect(globalThis.fetch).toHaveBeenCalledTimes(2)
+    expect(globalThis.fetch).toHaveBeenNthCalledWith(
+      1,
+      'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+      expect.objectContaining({
+        method: 'POST',
+        headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      }),
+    )
+    expect(String(globalThis.fetch.mock.calls[0][1].body)).toContain('response=valid-turnstile-token')
+    expect(globalThis.fetch.mock.calls[1][0]).toBe('https://api.brevo.com/v3/smtp/email')
+  })
+
+  test('rejects contact request when Turnstile verification fails', async () => {
+    process.env.TURNSTILE_SECRET_KEY = 'turnstile-secret'
+    globalThis.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: jest.fn().mockResolvedValue({ success: false }),
+    })
+    const res = createResponse()
+
+    await handler(createPostRequest({ turnstileToken: 'invalid-turnstile-token' }), res)
+
+    expect(res.statusCode).toBe(403)
+    expect(res.body).toEqual({ message: 'Security verification failed. Please try again.' })
+    expect(globalThis.fetch).toHaveBeenCalledTimes(1)
+  })
+
+  test('rate limits repeated requests from the same ip', async () => {
+    const ip = '198.51.100.10'
+    const responses = []
+
+    for (let i = 0; i < 6; i += 1) {
+      const res = createResponse()
+      responses.push(res)
+      await handler({
+        ...createPostRequest(),
+        headers: { 'cf-connecting-ip': ip },
+      }, res)
+    }
+
+    expect(responses.at(-1).statusCode).toBe(429)
+    expect(responses.at(-1).body).toEqual({ message: 'Too many requests. Please wait a minute and try again.' })
   })
 
   test('validates required contact fields', async () => {
