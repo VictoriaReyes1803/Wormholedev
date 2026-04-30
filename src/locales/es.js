@@ -237,6 +237,7 @@ export default {
       companyPlaceholder: 'Tu empresa (opcional)',
       service: 'Servicio requerido',
       serviceDefault: 'Selecciona un servicio',
+      budgetCurrency: 'Moneda del presupuesto',
       budget: 'Presupuesto estimado',
       budgetDefault: 'Selecciona un rango',
       message: 'Cuéntanos sobre tu proyecto *',
@@ -256,7 +257,14 @@ export default {
       disclaimer: 'Sin compromisos. Revisamos y respondemos dentro de un día hábil.',
     },
     services: ['Aplicación Web', 'App Móvil', 'Software a la Medida', 'Integración de IA', 'Automatización', 'Otro / No estoy seguro'],
-    budgets: ['Menos de $5,000', '$5,000 – $15,000', '$15,000 – $50,000', '$50,000+', 'Aún no lo sé'],
+    budgetCurrencies: [
+      { value: 'USD', label: 'USD - dólares estadounidenses' },
+      { value: 'MXN', label: 'MXN - pesos mexicanos' },
+    ],
+    budgets: {
+      USD: ['Menos de USD $2,000', 'USD $2,000 – $5,000', 'USD $5,000 – $15,000', 'USD $15,000 – $50,000', 'USD $50,000+', 'Aún no lo sé'],
+      MXN: ['Menos de MXN $35,000', 'MXN $35,000 – $85,000', 'MXN $85,000 – $250,000', 'MXN $250,000 – $850,000', 'MXN $850,000+', 'Aún no lo sé'],
+    },
     successTitle: '¡Mensaje recibido!',
     successSub: 'Gracias por contactarnos. Revisaremos los detalles de tu proyecto y te responderemos dentro de un día hábil.',
     location: 'Torreón, Coahuila, México · Remoto · Disponible en todo el mundo',

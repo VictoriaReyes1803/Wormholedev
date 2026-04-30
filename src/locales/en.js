@@ -237,6 +237,7 @@ export default {
       companyPlaceholder: 'Your company (optional)',
       service: 'Service needed',
       serviceDefault: 'Select a service',
+      budgetCurrency: 'Budget currency',
       budget: 'Estimated budget',
       budgetDefault: 'Select a range',
       message: 'Tell us about your project *',
@@ -256,7 +257,14 @@ export default {
       disclaimer: "No commitment required. We'll review and respond within one business day.",
     },
     services: ['Web Application', 'Mobile App', 'Custom Software', 'AI Integration', 'Automation', 'Other / Not Sure'],
-    budgets: ['Under $5,000', '$5,000 – $15,000', '$15,000 – $50,000', '$50,000+', 'Not sure yet'],
+    budgetCurrencies: [
+      { value: 'USD', label: 'USD - US dollars' },
+      { value: 'MXN', label: 'MXN - Mexican pesos' },
+    ],
+    budgets: {
+      USD: ['Under USD $2,000', 'USD $2,000 – $5,000', 'USD $5,000 – $15,000', 'USD $15,000 – $50,000', 'USD $50,000+', 'Not sure yet'],
+      MXN: ['Under MXN $35,000', 'MXN $35,000 – $85,000', 'MXN $85,000 – $250,000', 'MXN $250,000 – $850,000', 'MXN $850,000+', 'Not sure yet'],
+    },
     successTitle: 'Message received!',
     successSub: "Thanks for reaching out. We'll review your project details and get back to you within one business day.",
     location: 'Torreon, Coahuila Mexico · Remote · Available worldwide',

@@ -109,6 +109,7 @@ export default async function handler(req, res) {
     email,
     company,
     service,
+    budgetCurrency,
     budget,
     message,
     website,
@@ -145,7 +146,8 @@ export default async function handler(req, res) {
     ${fieldRow('Email', cleanedEmail)}
     ${fieldRow('Company', company)}
     ${fieldRow('Service', service)}
-    ${fieldRow('Budget', budget)}
+    ${fieldRow('Budget currency', budgetCurrency)}
+    ${fieldRow('Budget range', budget)}
     <hr />
     <p><strong>Message:</strong></p>
     <p>${escapeHtml(cleanedMessage).replace(/\n/g, '<br />')}</p>
@@ -158,7 +160,8 @@ export default async function handler(req, res) {
     `Email: ${cleanedEmail}`,
     `Company: ${clean(company) || '-'}`,
     `Service: ${clean(service) || '-'}`,
-    `Budget: ${clean(budget) || '-'}`,
+    `Budget currency: ${clean(budgetCurrency) || '-'}`,
+    `Budget range: ${clean(budget) || '-'}`,
     '',
     'Message:',
     cleanedMessage,

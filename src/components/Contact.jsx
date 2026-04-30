@@ -10,7 +10,7 @@ export default function Contact() {
   const turnstileRef = useRef(null)
   const turnstileWidgetRef = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
-  const [form, setForm] = useState({ name: '', email: '', company: '', service: '', budget: '', message: '', website: '' })
+  const [form, setForm] = useState({ name: '', email: '', company: '', service: '', budgetCurrency: 'USD', budget: '', message: '', website: '' })
   const [status, setStatus] = useState('idle')
   const [error, setError] = useState('')
   const [turnstileSiteKey, setTurnstileSiteKey] = useState('')
@@ -18,7 +18,10 @@ export default function Contact() {
   const [submitted, setSubmitted] = useState(false)
 
   const services = t('contact.services', { returnObjects: true })
-  const budgets = t('contact.budgets', { returnObjects: true })
+  const budgetCurrencies = t('contact.budgetCurrencies', { returnObjects: true })
+  const budgets = t(`contact.budgets.${form.budgetCurrency}`, { returnObjects: true })
+  const currencyOptions = Array.isArray(budgetCurrencies) ? budgetCurrencies : []
+  const budgetOptions = Array.isArray(budgets) ? budgets : []
   const nextItems = t('contact.next', { returnObjects: true })
 
   useEffect(() => {
@@ -107,7 +110,15 @@ export default function Contact() {
     }
   }
 
-  const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
+  const handleChange = e => {
+    const { name, value } = e.target
+
+    setForm(f => ({
+      ...f,
+      [name]: value,
+      ...(name === 'budgetCurrency' ? { budget: '' } : {}),
+    }))
+  }
   const handleSubmit = async e => {
     e.preventDefault()
     setStatus('sending')
@@ -295,16 +306,27 @@ export default function Contact() {
                     </select>
                   </div>
                   <div>
-                    <label htmlFor="contact-budget" className="block text-xs font-600 text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{t('contact.form.budget')}</label>
+                    <label htmlFor="contact-budget-currency" className="block text-xs font-600 text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{t('contact.form.budgetCurrency')}</label>
                     <select
-                      id="contact-budget"
-                      name="budget" value={form.budget} onChange={handleChange}
+                      id="contact-budget-currency"
+                      name="budgetCurrency" value={form.budgetCurrency} onChange={handleChange}
                       className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 dark:focus:border-blue-500 transition-all"
                     >
-                      <option value="">{t('contact.form.budgetDefault')}</option>
-                      {budgets.map(b => <option key={b} value={b}>{b}</option>)}
+                      {currencyOptions.map(currency => <option key={currency.value} value={currency.value}>{currency.label}</option>)}
                     </select>
                   </div>
+                </div>
+
+                <div>
+                  <label htmlFor="contact-budget" className="block text-xs font-600 text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{t('contact.form.budget')}</label>
+                  <select
+                    id="contact-budget"
+                    name="budget" value={form.budget} onChange={handleChange}
+                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 dark:focus:border-blue-500 transition-all"
+                  >
+                    <option value="">{t('contact.form.budgetDefault')}</option>
+                    {budgetOptions.map(b => <option key={b} value={b}>{b}</option>)}
+                  </select>
                 </div>
 
                 <div>
