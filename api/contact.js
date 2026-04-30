@@ -1,5 +1,9 @@
 const BREVO_ENDPOINT = 'https://api.brevo.com/v3/smtp/email'
+const TURNSTILE_ENDPOINT = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const RATE_LIMIT_WINDOW_MS = 60 * 1000
+const RATE_LIMIT_MAX = 5
+const rateLimit = new Map()
 
 const json = (res, status, body) => {
   res.status(status).json(body)
@@ -20,16 +24,81 @@ const fieldRow = (label, value) => {
   return `<p><strong>${label}:</strong> ${safeValue}</p>`
 }
 
+const getClientIp = req =>
+  clean(req.headers?.['cf-connecting-ip'])
+  || clean(req.headers?.['x-forwarded-for']).split(',')[0]
+  || clean(req.socket?.remoteAddress)
+  || 'unknown'
+
+const isRateLimited = ip => {
+  const now = Date.now()
+  const bucket = rateLimit.get(ip) || { count: 0, resetAt: now + RATE_LIMIT_WINDOW_MS }
+
+  if (now > bucket.resetAt) {
+    bucket.count = 0
+    bucket.resetAt = now + RATE_LIMIT_WINDOW_MS
+  }
+
+  bucket.count += 1
+  rateLimit.set(ip, bucket)
+  return bucket.count > RATE_LIMIT_MAX
+}
+
+const getTurnstileSecret = () =>
+  process.env.TURNSTILE_SECRET_KEY
+  || process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY
+  || process.env.secret_key
+  || process.env.SECRET_KEY
+
+const verifyTurnstile = async ({ token, remoteIp, secret }) => {
+  if (!token) return false
+
+  const body = new URLSearchParams({
+    secret,
+    response: token,
+  })
+
+  if (remoteIp && remoteIp !== 'unknown') {
+    body.set('remoteip', remoteIp)
+  }
+
+  try {
+    const response = await fetch(TURNSTILE_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+      },
+      body,
+    })
+
+    if (!response.ok) {
+      return false
+    }
+
+    const data = await response.json()
+    return data.success === true
+  } catch (err) {
+    console.error('Turnstile verification failed:', err)
+    return false
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST')
     return json(res, 405, { message: 'Method not allowed' })
   }
 
+  const clientIp = getClientIp(req)
+  if (isRateLimited(clientIp)) {
+    return json(res, 429, { message: 'Too many requests. Please wait a minute and try again.' })
+  }
+
   const apiKey = process.env.BREVO_API_KEY
   const toEmail = process.env.CONTACT_TO_EMAIL || 'info@wormholedev.space'
   const fromEmail = process.env.CONTACT_FROM_EMAIL || 'info@wormholedev.space'
   const fromName = process.env.CONTACT_FROM_NAME || 'WormholeDev'
+  const turnstileSecret = getTurnstileSecret()
 
   if (!apiKey) {
     return json(res, 500, { message: 'Email service is not configured' })
@@ -43,6 +112,7 @@ export default async function handler(req, res) {
     budget,
     message,
     website,
+    turnstileToken,
   } = req.body || {}
 
   if (clean(website)) {
@@ -55,6 +125,18 @@ export default async function handler(req, res) {
 
   if (!cleanedName || !EMAIL_RE.test(cleanedEmail) || !cleanedMessage) {
     return json(res, 400, { message: 'Please provide a valid name, email, and message' })
+  }
+
+  if (turnstileSecret) {
+    const isHuman = await verifyTurnstile({
+      token: clean(turnstileToken),
+      remoteIp: clientIp,
+      secret: turnstileSecret,
+    })
+
+    if (!isHuman) {
+      return json(res, 403, { message: 'Security verification failed. Please try again.' })
+    }
   }
 
   const htmlContent = `

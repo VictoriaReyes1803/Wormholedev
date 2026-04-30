@@ -30,6 +30,8 @@ BREVO_API_KEY=your_brevo_api_key
 CONTACT_TO_EMAIL=info@wormholedev.space
 CONTACT_FROM_EMAIL=info@wormholedev.space
 CONTACT_FROM_NAME=WormholeDev
+SITE_KEY=your_cloudflare_turnstile_site_key
+TURNSTILE_SECRET_KEY=your_cloudflare_turnstile_secret_key
 ```
 
 Configure the same variables in Vercel under Project Settings > Environment Variables.
@@ -66,6 +68,18 @@ POST /api/contact
 
 The API validates required fields, uses a hidden honeypot field for basic spam filtering, and sends the message through Brevo. The visitor email is set as `replyTo` so replies go directly to the person who submitted the form while the sender remains the verified WormholeDev address.
 
+## Form Security
+
+The contact form uses several layers of protection:
+
+- Cloudflare Turnstile challenge on the frontend
+- Server-side Turnstile token verification before sending email
+- Hidden honeypot field for simple bot filtering
+- Basic per-IP rate limiting in the Vercel function
+- Server-side validation for required fields and email format
+
+The Turnstile site key is public and can be exposed to the browser. The Turnstile secret key must stay private in Vercel environment variables.
+
 ## Scripts
 
 ```bash
@@ -83,5 +97,6 @@ The project is designed for Vercel. After pushing to GitHub, Vercel can build th
 Before promoting to production, confirm:
 
 - Brevo sender/domain is verified
+- Cloudflare Turnstile site key and secret key are configured
 - Vercel environment variables are set
 - `npm test`, `npm run lint`, and `npm run build` pass
