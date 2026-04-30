@@ -8,6 +8,7 @@ import Solutions from './components/Solutions.jsx'
 import About from './components/About.jsx'
 import Contact from './components/Contact.jsx'
 import Footer from './components/Footer.jsx'
+import TawkChat from './components/TawkChat.jsx'
 
 export default function App() {
   const [dark, setDark] = useState(() => {
@@ -44,6 +45,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      <TawkChat />
     </div>
   )
 }
