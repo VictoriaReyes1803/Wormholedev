@@ -236,6 +236,8 @@ export default {
       message: 'Tell us about your project *',
       messagePlaceholder: "Describe what you're trying to build or what problem you need to solve. Don't worry about being too technical — plain language is fine.",
       submit: 'Send Your Message',
+      sending: 'Sending...',
+      error: 'We could not send your message. Please try again or email us directly.',
       disclaimer: "No commitment required. We'll review and respond within one business day.",
     },
     services: ['Web Application', 'Mobile App', 'Custom Software', 'AI Integration', 'Automation', 'Other / Not Sure'],

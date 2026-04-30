@@ -104,7 +104,7 @@ export default function Footer() {
               <h4 className="text-xs font-700 text-gray-300 uppercase tracking-widest mb-4">{t('footer.contactTitle')}</h4>
               <ul className="space-y-3">
                 {[
-                  { icon: Mail, text: 'hello@wormholedev.com' },
+                  { icon: Mail, text: 'info@wormholedev.space' },
                   { icon: Phone, text: '+52 (871) 5349734' },
                   { icon: MapPin, text: t('footer.location') },
                 ].map(item => {

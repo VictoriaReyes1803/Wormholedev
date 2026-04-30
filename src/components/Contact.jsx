@@ -8,7 +8,9 @@ export default function Contact() {
   const { t } = useTranslation()
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
-  const [form, setForm] = useState({ name: '', email: '', company: '', service: '', budget: '', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', company: '', service: '', budget: '', message: '', website: '' })
+  const [status, setStatus] = useState('idle')
+  const [error, setError] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
   const services = t('contact.services', { returnObjects: true })
@@ -16,9 +18,27 @@ export default function Contact() {
   const nextItems = t('contact.next', { returnObjects: true })
 
   const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }))
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault()
-    setSubmitted(true)
+    setStatus('sending')
+    setError('')
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+
+      if (!response.ok) {
+        throw new Error('Contact request failed')
+      }
+
+      setSubmitted(true)
+    } catch {
+      setError(t('contact.form.error'))
+      setStatus('idle')
+    }
   }
 
   return (
@@ -45,7 +65,7 @@ export default function Contact() {
 
             <div className="space-y-4">
               {[
-                { icon: Mail, label: 'Email', value: 'hello@wormholedev.com' },
+                { icon: Mail, label: 'Email', value: 'info@wormholedev.space' },
                 { icon: Phone, label: 'Phone', value: '+52 (871) 5349734' },
                 { icon: MapPin, label: 'Location', value: t('contact.location') },
               ].map(item => {
@@ -99,6 +119,15 @@ export default function Contact() {
                 onSubmit={handleSubmit}
                 className="bg-gray-50 dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-7 space-y-5"
               >
+                <input
+                  type="text"
+                  name="website"
+                  value={form.website}
+                  onChange={handleChange}
+                  className="hidden"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
                     <label className="block text-xs font-600 text-gray-600 dark:text-gray-400 mb-1.5 uppercase tracking-wide">{t('contact.form.nameRequired')}</label>
@@ -159,11 +188,18 @@ export default function Contact() {
                   />
                 </div>
 
+                {error && (
+                  <p className="text-sm text-red-600 dark:text-red-400 text-center" role="alert">
+                    {error}
+                  </p>
+                )}
+
                 <button
                   type="submit"
+                  disabled={status === 'sending'}
                   className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 gradient-bg text-white font-700 rounded-xl shadow-md shadow-blue-500/20 hover:opacity-90 hover:shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5 transition-all duration-200"
                 >
-                  {t('contact.form.submit')}
+                  {status === 'sending' ? t('contact.form.sending') : t('contact.form.submit')}
                   <Send size={16} />
                 </button>
 
