@@ -1,73 +1,87 @@
-# React + TypeScript + Vite
+# WormholeDev
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Landing page for WormholeDev, a bilingual software development services site built with React, Vite, Tailwind CSS, Framer Motion, and i18next.
 
-Currently, two official plugins are available:
+The site includes a Vercel API route for contact form submissions. Messages are sent through Brevo Transactional Email and delivered to the configured WormholeDev inbox.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech Stack
 
-## React Compiler
+- React 19
+- Vite 8
+- Tailwind CSS 4
+- Framer Motion
+- i18next / react-i18next
+- Vercel Functions
+- Brevo Transactional Email API
+- Jest
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Requirements
 
-## Expanding the ESLint configuration
+- Node.js 22 or newer
+- npm
+- A Brevo API key with a verified sender/domain
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Environment Variables
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Copy `.env.example` to `.env` for local development:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+BREVO_API_KEY=your_brevo_api_key
+CONTACT_TO_EMAIL=info@wormholedev.space
+CONTACT_FROM_EMAIL=info@wormholedev.space
+CONTACT_FROM_NAME=WormholeDev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Configure the same variables in Vercel under Project Settings > Environment Variables.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Development
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Install dependencies:
+
+```bash
+npm install
 ```
+
+Run the frontend only:
+
+```bash
+npm run dev
+```
+
+Run the app with Vercel API routes:
+
+```bash
+npx vercel dev
+```
+
+Use `vercel dev` when testing the contact form, because Vite alone does not serve `/api/contact`.
+
+## Contact API
+
+The contact form posts to:
+
+```text
+POST /api/contact
+```
+
+The API validates required fields, uses a hidden honeypot field for basic spam filtering, and sends the message through Brevo. The visitor email is set as `replyTo` so replies go directly to the person who submitted the form while the sender remains the verified WormholeDev address.
+
+## Scripts
+
+```bash
+npm run dev       # Start Vite dev server
+npm run build     # Build production assets
+npm run lint      # Run ESLint
+npm test          # Run Jest tests
+npm run preview   # Preview the production build locally
+```
+
+## Deployment
+
+The project is designed for Vercel. After pushing to GitHub, Vercel can build the React app and deploy the `/api/contact` function automatically.
+
+Before promoting to production, confirm:
+
+- Brevo sender/domain is verified
+- Vercel environment variables are set
+- `npm test`, `npm run lint`, and `npm run build` pass
