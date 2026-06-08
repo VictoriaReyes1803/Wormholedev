@@ -185,8 +185,8 @@ export default function Contact() {
         <div ref={ref} className="grid lg:grid-cols-5 gap-10 max-w-5xl mx-auto">
           {/* Contact info */}
           <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
+            initial={{ opacity: 0, y: 32 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="lg:col-span-2 space-y-6"
           >
@@ -229,9 +229,9 @@ export default function Contact() {
 
           {/* Form */}
           <motion.div
-            initial={{ opacity: 0, x: 24 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.55, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            initial={{ opacity: 0, y: 40 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
             className="lg:col-span-3"
           >
             {submitted ? (
@@ -269,7 +269,7 @@ export default function Contact() {
                       id="contact-name"
                       type="text" name="name" required value={form.name} onChange={handleChange}
                       placeholder="John Smith"
-                      className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 dark:focus:border-blue-500 transition-all placeholder-gray-400 dark:placeholder-gray-500"
+                      className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 dark:focus:border-blue-500 focus:[box-shadow:0_0_0_4px_rgba(59,130,246,0.12)] transition-all placeholder-gray-400 dark:placeholder-gray-500"
                     />
                   </div>
                   <div>
@@ -278,7 +278,7 @@ export default function Contact() {
                       id="contact-email"
                       type="email" name="email" required value={form.email} onChange={handleChange}
                       placeholder="john@company.com"
-                      className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 dark:focus:border-blue-500 transition-all placeholder-gray-400 dark:placeholder-gray-500"
+                      className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 dark:focus:border-blue-500 focus:[box-shadow:0_0_0_4px_rgba(59,130,246,0.12)] transition-all placeholder-gray-400 dark:placeholder-gray-500"
                     />
                   </div>
                 </div>
@@ -289,7 +289,7 @@ export default function Contact() {
                     id="contact-company"
                     type="text" name="company" value={form.company} onChange={handleChange}
                     placeholder={t('contact.form.companyPlaceholder')}
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-400 dark:focus:border-blue-500 transition-all placeholder-gray-400 dark:placeholder-gray-500"
+                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 dark:focus:border-blue-500 focus:[box-shadow:0_0_0_4px_rgba(59,130,246,0.12)] transition-all placeholder-gray-400 dark:placeholder-gray-500"
                   />
                 </div>
 

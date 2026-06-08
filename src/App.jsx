@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { MotionConfig } from 'framer-motion'
 import Navbar from './components/Navbar.jsx'
 import Hero from './components/Hero.jsx'
 import Services from './components/Services.jsx'
@@ -33,6 +34,7 @@ export default function App() {
   }, [dark])
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="min-h-screen bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
       <Navbar dark={dark} setDark={setDark} />
       <main>
@@ -47,5 +49,6 @@ export default function App() {
       <Footer />
       <TawkChat />
     </div>
+    </MotionConfig>
   )
 }

@@ -29,3 +29,41 @@
     box-shadow: 0 4px 24px rgba(6, 182, 212, 0.06), 0 1px 4px rgba(0,0,0,0.3);
   }
 }
+
+/* ── Mesh gradient animations for Hero background ──────────────── */
+@keyframes mesh-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -30px) scale(1.08); }
+}
+@keyframes mesh-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-30px, 20px) scale(1.06); }
+}
+@keyframes mesh-drift-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(20px, 15px) scale(1.04); }
+  66% { transform: translate(-15px, -20px) scale(0.97); }
+}
+
+.animate-mesh-1 {
+  animation: mesh-drift-1 14s ease-in-out infinite;
+  will-change: transform;
+}
+.animate-mesh-2 {
+  animation: mesh-drift-2 18s ease-in-out infinite;
+  will-change: transform;
+}
+.animate-mesh-3 {
+  animation: mesh-drift-3 11s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ── prefers-reduced-motion: disable CSS animations ─────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .animate-mesh-1,
+  .animate-mesh-2,
+  .animate-mesh-3 {
+    animation: none;
+    will-change: auto;
+  }
+}

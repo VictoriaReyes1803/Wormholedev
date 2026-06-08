@@ -3,6 +3,7 @@ import { motion, useInView } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import { MessageCircle, Map, Code2, Rocket } from 'lucide-react'
 import { SectionHeader } from './Services.jsx'
+import { connectorLine, pulseRing } from '../lib/animations.js'
 
 const icons = [MessageCircle, Map, Code2, Rocket]
 
@@ -18,11 +19,16 @@ export default function Process() {
         <SectionHeader
           badge={t('process.badge')}
           title={<>{t('process.title1')} <span className="gradient-text">{t('process.title2')}</span></>}
-          sub={t('process.sub')}
         />
 
         <div ref={ref} className="relative">
-          <div className="hidden lg:block absolute top-16 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-blue-200 via-cyan-300 to-blue-200 dark:from-blue-800 dark:via-cyan-700 dark:to-blue-800" />
+          {/* Animated connector line */}
+          <motion.div
+            className="hidden lg:block absolute top-16 left-[12.5%] right-[12.5%] h-0.5 bg-gradient-to-r from-blue-200 via-cyan-300 to-blue-200 dark:from-blue-800 dark:via-cyan-700 dark:to-blue-800 origin-left"
+            initial="hidden"
+            animate={inView ? 'visible' : 'hidden'}
+            variants={connectorLine}
+          />
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {steps.map((s, i) => {
@@ -41,8 +47,17 @@ export default function Process() {
                       <div className="w-14 h-14 rounded-2xl gradient-bg flex items-center justify-center shadow-lg shadow-blue-500/25 z-10 relative">
                         <Icon size={24} className="text-white" />
                       </div>
-                      <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-white dark:bg-gray-900 border-2 border-blue-500 flex items-center justify-center z-20">
-                        <span className="text-xs font-800 gradient-text leading-none">{i + 1}</span>
+                      {/* Pulse ring + step number badge */}
+                      <div className="absolute -top-2 -right-2 z-20">
+                        <div className="relative">
+                          <motion.div
+                            animate={pulseRing}
+                            className="absolute inset-0 rounded-full bg-blue-400/40"
+                          />
+                          <div className="relative w-6 h-6 rounded-full bg-white dark:bg-gray-900 border-2 border-blue-500 flex items-center justify-center">
+                            <span className="text-xs font-800 gradient-text leading-none">{i + 1}</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -51,15 +66,12 @@ export default function Process() {
                     <div className="text-xs font-800 text-blue-400 dark:text-blue-500 tracking-widest uppercase mb-2">
                       {t('process.stepLabel')} {num}
                     </div>
-                    <h3 className="text-base font-700 text-gray-900 dark:text-white mb-3 leading-snug">
+                    <h3 className="text-base font-700 text-gray-900 dark:text-white mb-2 leading-snug">
                       {s.title}
                     </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-4">
+                    <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-2">
                       {s.desc}
                     </p>
-                    <div className="pt-3 border-t border-gray-100 dark:border-gray-800">
-                      <p className="text-xs text-gray-400 dark:text-gray-500 font-500">{s.detail}</p>
-                    </div>
                   </div>
                 </motion.div>
               )
