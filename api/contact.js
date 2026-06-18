@@ -1,3 +1,5 @@
+import { createHash } from 'crypto'
+
 const BREVO_ENDPOINT = 'https://api.brevo.com/v3/smtp/email'
 const TURNSTILE_ENDPOINT = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -10,6 +12,8 @@ const json = (res, status, body) => {
 }
 
 const clean = value => String(value || '').trim()
+
+const headerSafe = value => clean(value).replace(/[\r\n\t]/g, ' ')
 
 const escapeHtml = value =>
   clean(value)
@@ -44,11 +48,7 @@ const isRateLimited = ip => {
   return bucket.count > RATE_LIMIT_MAX
 }
 
-const getTurnstileSecret = () =>
-  process.env.TURNSTILE_SECRET_KEY
-  || process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY
-  || process.env.secret_key
-  || process.env.SECRET_KEY
+const getTurnstileSecret = () => process.env.TURNSTILE_SECRET_KEY || null
 
 const verifyTurnstile = async ({ token, remoteIp, secret }) => {
   if (!token) return false
@@ -100,6 +100,11 @@ export default async function handler(req, res) {
   const fromName = process.env.CONTACT_FROM_NAME || 'WormholeDev'
   const turnstileSecret = getTurnstileSecret()
 
+  if (!turnstileSecret) {
+    console.error('CRITICAL: TURNSTILE_SECRET_KEY is not configured')
+    return json(res, 503, { message: 'Contact form temporarily unavailable' })
+  }
+
   if (!apiKey) {
     return json(res, 500, { message: 'Email service is not configured' })
   }
@@ -120,7 +125,7 @@ export default async function handler(req, res) {
     return json(res, 200, { ok: true })
   }
 
-  const cleanedName = clean(name)
+  const cleanedName = headerSafe(name)
   const cleanedEmail = clean(email).toLowerCase()
   const cleanedMessage = clean(message)
 
@@ -128,16 +133,19 @@ export default async function handler(req, res) {
     return json(res, 400, { message: 'Please provide a valid name, email, and message' })
   }
 
-  if (turnstileSecret) {
-    const isHuman = await verifyTurnstile({
-      token: clean(turnstileToken),
-      remoteIp: clientIp,
-      secret: turnstileSecret,
-    })
+  if (cleanedName.length > 120)       return json(res, 400, { message: 'Name is too long (max 120 characters)' })
+  if (cleanedEmail.length > 254)      return json(res, 400, { message: 'Email address is too long' })
+  if (cleanedMessage.length > 5000)   return json(res, 400, { message: 'Message is too long (max 5000 characters)' })
+  if (clean(company).length > 200)    return json(res, 400, { message: 'Company name is too long' })
 
-    if (!isHuman) {
-      return json(res, 403, { message: 'Security verification failed. Please try again.' })
-    }
+  const isHuman = await verifyTurnstile({
+    token: clean(turnstileToken),
+    remoteIp: clientIp,
+    secret: turnstileSecret,
+  })
+
+  if (!isHuman) {
+    return json(res, 403, { message: 'Security verification failed. Please try again.' })
   }
 
   const htmlContent = `
@@ -196,6 +204,14 @@ export default async function handler(req, res) {
     console.error('Brevo contact email failed:', detail)
     return json(res, 502, { message: 'Could not send email' })
   }
+
+  const ipHash = createHash('sha256').update(clientIp).digest('hex').slice(0, 12)
+  console.info(JSON.stringify({
+    event: 'contact_submitted',
+    ts: new Date().toISOString(),
+    ip_hash: ipHash,
+    turnstile: true,
+  }))
 
   return json(res, 200, { ok: true })
 }
